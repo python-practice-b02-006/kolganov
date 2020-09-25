@@ -1,3 +1,3 @@
 # kolganov
 
-Some comments in README.md
+Some other comments for README.md file
