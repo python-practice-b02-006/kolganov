@@ -2,6 +2,7 @@ import pygame
 
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
+RED = (255, 0, 0)
 
 pygame.init()
 
@@ -29,6 +30,11 @@ while not done:
     pygame.draw.ellipse(screen, BLUE, [50, 70, 100, 60], 5)
     pygame.draw.ellipse(screen, BLUE, [350, 70, 100, 60], 5)
     pygame.draw.ellipse(screen, BLUE, [170, 50, 70, 100], 5)
+    
+    surface = pygame.Surface([200, 100], pygame.SRCALPHA)
+    pygame.draw.ellipse(surface, RED, [10, 10, 180, 80], 10)
+    surface_rot = pygame.transform.rotate(surface, 30)
+    screen.blit(surface_rot, [50, 50])
 
     pygame.display.flip()
 
