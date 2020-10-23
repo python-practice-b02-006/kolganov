@@ -52,6 +52,7 @@ class Ball():
         Changes the ball's velocity due to gravitational force.
         '''
         self.vel[1] += grav
+        
         for i in range(2):
             self.coord[i] += time * self.vel[i]
         self.check_corners()
