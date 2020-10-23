@@ -17,24 +17,28 @@ class Ball():
         self.coord = coord
         self.vel = vel
         self.rad = rad
+        self.is_alive = True
 
     def draw(self, screen):
         pg.draw.circle(screen, self.color, self.coord, self.rad)
 
-    def move(self, t_step=1.):
+    def move(self, t_step=1., g=2.):
+        self.vel[1] += int(g * t_step)
         for i in range(2):
             self.coord[i] += int(self.vel[i] * t_step)
         self.check_walls()
+        if self.vel[0]**2 + self.vel[1]**2 < 2**2 and self.coord[1] > SCREEN_SIZE[1] - 2*self.rad:
+               self.is_alive = False
 
     def check_walls(self):
         n = [[1, 0], [0, 1]]
         for i in range(2):
             if self.coord[i] < self.rad:
                 self.coord[i] = self.rad
-                self.flip_vel(n[i])
+                self.flip_vel(n[i], 0.8, 0.9)
             elif self.coord[i] > SCREEN_SIZE[i] - self.rad:
                 self.coord[i] = SCREEN_SIZE[i] - self.rad
-                self.flip_vel(n[i])
+                self.flip_vel(n[i], 0.8, 0.9)
 
     def flip_vel(self, axis, coef_perp=1., coef_par=1.):
         vel = np.array(self.vel)
@@ -92,6 +96,7 @@ class Manager():
         done = self.handle_events(events)
         self.move()
         self.draw(screen)
+        self.check_alive()
         return done
 
     def draw(self, screen):
@@ -104,6 +109,15 @@ class Manager():
         for ball in self.balls:
             ball.move()
         self.gun.move()
+
+    def check_alive(self):
+        dead_balls = []
+        for i, ball in enumerate(self.balls):
+            if not ball.is_alive:
+                dead_balls.append(i)
+
+        for i in reversed(dead_balls):
+            self.balls.pop(i)
     
     def handle_events(self, events):
         done = False
