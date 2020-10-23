@@ -1,6 +1,6 @@
 import numpy as np
 import pygame as pg
-from random import randint
+from random import randint, gauss
 
 pg.init()
 pg.font.init()
@@ -113,7 +113,8 @@ class Gun():
         self.angle = np.arctan2(target_pos[1] - self.coord[1], target_pos[0] - self.coord[0])
 
     def move(self, inc):
-        self.coord[1] += inc
+        if (self.coord[1] > 30 or inc > 0) and (self.coord[1] < SCREEN_SIZE[1] - 30 or inc < 0):
+            self.coord[1] += inc
 
     def draw(self, screen):
         gun_shape = []
@@ -131,13 +132,16 @@ class ScoreTable():
     def __init__(self, t_destr=0, b_used=0):
         self.t_destr = t_destr
         self.b_used = b_used
-        self.font = pg.font.SysFont("berationmono", 30)
+        self.font = pg.font.SysFont("dejavusansmono", 25)
+
+    def score(self):
+        return self.t_destr - self.b_used
 
     def draw(self, screen):
         score_surf = []
         score_surf.append(self.font.render("Destroyed: {}".format(self.t_destr), True, WHITE))
         score_surf.append(self.font.render("Balls used: {}".format(self.b_used), True, WHITE))
-        score_surf.append(self.font.render("Total: {}".format(2*self.t_destr - self.b_used), True, RED))
+        score_surf.append(self.font.render("Total: {}".format(self.score()), True, RED))
         for i in range(3):
             screen.blit(score_surf[i], [10, 10 + 30*i])
 
@@ -153,25 +157,11 @@ class Manager():
 
     def new_mission(self):
         for i in range(self.n_targets):
-            self.targets.append(Target())
+            self.targets.append(Target(rad=randint(max(1, 30 - 2*max(0, self.score_t.score())), 
+                30 - max(0, self.score_t.score()))))
 
     def process(self, events, screen):
-        done = False
-        for event in events:
-            if event.type == pg.QUIT:
-                done = True
-            elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_UP:
-                    self.gun.move(-2)
-                elif event.key == pg.K_DOWN:
-                    self.gun.move(2)
-            elif event.type == pg.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    self.gun.activate()
-            elif event.type == pg.MOUSEBUTTONUP:
-                if event.button == 1:
-                    self.balls.append(self.gun.strike())
-                    self.score_t.b_used += 1
+        done = self.handle_events(events)
 
         if pg.mouse.get_focused():
             mouse_pos = pg.mouse.get_pos()
@@ -184,6 +174,25 @@ class Manager():
         if len(self.targets) == 0 and len(self.balls) == 0:
             self.new_mission()
 
+        return done
+
+    def handle_events(self, events):
+        done = False
+        for event in events:
+            if event.type == pg.QUIT:
+                done = True
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_UP:
+                    self.gun.move(-5)
+                elif event.key == pg.K_DOWN:
+                    self.gun.move(5)
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    self.gun.activate()
+            elif event.type == pg.MOUSEBUTTONUP:
+                if event.button == 1:
+                    self.balls.append(self.gun.strike())
+                    self.score_t.b_used += 1
         return done
 
     def draw(self, screen):
