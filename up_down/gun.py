@@ -55,7 +55,7 @@ class Table():
 
 class Gun():
     def __init__(self, coord=[30, SCREEN_SIZE[1]//2], 
-                 min_pow=10, max_pow=30):
+                 min_pow=20, max_pow=50):
         self.coord = coord
         self.angle = 0
         self.min_pow = min_pow
@@ -85,6 +85,7 @@ class Gun():
 
 class Target():
     pass
+
 
 class Manager():
     def __init__(self):
