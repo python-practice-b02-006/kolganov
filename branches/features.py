@@ -1,3 +1,3 @@
 class FeatureClass():
     def __init__(self):
-        pass
+        print("New class constructor!")
