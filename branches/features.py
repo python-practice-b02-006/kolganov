@@ -3,7 +3,7 @@ class MyFeatures():
         pass
 
     def feature_1(self):
-        pass
+        print("Feature 1 is done")
 
     def feature_2(self):
         pass
