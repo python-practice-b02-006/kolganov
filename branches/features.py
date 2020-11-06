@@ -6,4 +6,4 @@ class MyFeatures():
         pass
 
     def feature_2(self):
-        pass
+        print("Feature 2 is done")
