@@ -1,0 +1,242 @@
+\documentclass{beamer}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{minted}
+
+\usetheme{Madrid}
+\usefonttheme[onlymath]{serif}
+
+
+
+\title[Пр-ия о пр-ии]{Презентация о презентации} 
+\subtitle{Маленький такой подзаголовочек}
+\author{Никита Колганов}
+\institute[МФТИ]
+{Московский физико-технический институт\\
+\textit{nikita.kolganov@phystech.edu}}
+\date[\today]{Уже \today, пора начинать ботать}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+\begin{frame}[fragile]{Как устроен этот файл}
+DISCLAIMER: Если вам не интересно, как и почему всё работает, пропустите этот слайд. \medskip \\ 
+Как и каждый латеховский проект, этот документ начинается с шапки
+
+\begin{minted}{latex}
+%класс документа - beamer, специальный класс для презентаций
+\documentclass{beamer}        
+%далее идут импорты необходимых пакетов
+\usepackage[T2A]{fontenc}    %шрифт
+\usepackage[utf8]{inputenc}    %кодировка
+\usepackage[russian]{babel}    %обработка русского текста
+\usepackage{graphicx}    %графика
+\usepackage{minted}    %листинги кода, типа этого
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile]{Информация о докладчике и докладе}
+
+Далее идут команды, отображаемые на титульном слайде вашей презентации
+\begin{minted}{latex}
+\title[Короткое название]{Название презентации} 
+\subtitle{Подзаголовок презентации}
+\author[Сокращенное имя докладчика]{Имя докладчика}
+\institute[Короткое название организации]
+        {Полное название организации}
+\date[Короткая дата]{Дата}    %можно поставить \today
+\end{minted}
+Здесь и везде -- выражения в квадратных скобках -- необязательные, их можно не заполнять (как и сами скобки).
+\end{frame}
+
+\begin{frame}[fragile]{Настройка темы презентации}
+Следующая команда задаёт тему презентации. 
+Они называются по городам. 
+Я рекомендую Warsaw и Madrid (никогда там не был).
+\begin{minted}{latex}
+\usetheme{Madrid}
+\end{minted}
+В презентациях принято использовать шрифты ``без засечек'', они хорошо читаются издалека. 
+Однако формулы, написанные шрифтом без засечек выглядят отвратительно. Исправить это недоразумение можно следующей командой.
+\begin{minted}{latex}
+\usefonttheme[onlymath]{serif}
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Тело документа}
+Далее начинается ``тело документа'' --- то, что будет отображаться
+\begin{minted}{latex}
+\begin{document}
+
+...
+
+\end{document}
+\end{minted}
+Все, что написано вне этого окружения по умолчанию игнорируется. \medskip \\
+Вообще, примерно так выглядят все окружения в \LaTeX
+\begin{minted}{latex}
+\begin{имя окружения}[необязательные аргументы]
+                    {обязательные (если предусмотрены)} 
+    Какая-то начинка
+\end{имя окружения}
+\end{minted}
+С другими окружениями мы познакомимся на следующем слайде.
+\end{frame}
+
+\begin{frame}[fragile]{Слайд о слайдах}
+Чтобы создать слайд, нужно (внутри окружения document) написать
+\begin{verbatim}
+\begin{frame}{Название слайда}
+Содержание слайда
+\end{frame}\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Слайд о первом слайде}
+Чтобы создать титульный слайд (с информацией о докладе и докладчике),
+ нужно использовать команду maketitle внутри окружения слайда frame
+\begin{verbatim}
+\begin{frame}
+\titlepage
+\end{frame}\end{verbatim}
+В этом случае указывать название слайда не нужно.
+\end{frame}
+
+\begin{frame}[fragile]{Колоночки}
+Чтобы разбить слайд на колонки, нужно использовать окружение columns
+\begin{minted}{latex}
+\begin{columns}
+\column{0.6\textwidth} Колонка, шириной 0.6 от ширины слайда. 
+Этот текст является содержимым первой колонки.
+
+\column{0.4\textwidth} Колонка, шириной 0.4 от ширины слайда
+Этот текст является содержимым второй колонки.
+\end{columns}
+Результат --- на следующем слайде.
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Колоночки --- демонстрация}
+Текст до колоночек
+\begin{columns}
+\column{0.4\textwidth} Колонка, шириной 0.4 от ширины слайда. 
+Этот текст является содержимым первой колонки.
+
+\column{0.6\textwidth} Колонка, шириной 0.5 от ширины слайда
+Этот текст является содержимым второй колонки.
+\end{columns}
+Текст после колоночек
+\end{frame}
+
+\begin{frame}[fragile]{Картиночки}
+Для добавления картинок используется окружение figure. Но оно создаёт только поле для картинки/её названия, для добавления самой картинки нужно использовать includegraphics
+\begin{columns}
+\column{0.7\textwidth} Код:
+\begin{minted}{latex}
+\begin{figure}
+\centering %центрирование
+\includegraphics[width=0.7\textwidth]
+    {abacaba.png}
+\caption{Подпись к картинке}
+\end{figure}
+\end{minted}
+Мы задействовали необязательный аргумент includegraphics, настраивающий ширину картинки.
+\column{0.3\textwidth} Результат:
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{abacaba.png}
+\caption{Подпись к картинке}
+\end{figure}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Листинги кода}
+А теперь один из самых важных моментов для презентации вашего проекта --- листинги кода.
+Чтобы beamer не портил форматирование кода, необходимо использовать специальное окружение --- verbatim. Оно воспроизводит содержащийся в нём текст ``буквально''
+\begin{verbatim}\begin{verbatim}
+Текст, написанный внутри этого окружения
+      воспроизводится буквально, с сохранением
+            пробелов   
+   и  переносов
+\begin{verbatim}\end{verbatim}
+Однако, чтобы использовать это окружение внутри слайда, надо обязательно использовать необязательный аргумент fragile!
+\begin{verbatim}
+\begin{frame}[fragile]{<-- необязательный аргумент тут}
+Содержание слайда
+\end{frame}\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Листинги кода -- upper intermediate}
+Есть специальный пакет --- minted, который не только сохраняет форматирование кода, но и подсвечивает его, согласно синтаксису конкретного языка. \medskip \\
+Так выглядит код:
+\begin{verbatim}\begin{minted}{python}
+def funktsiya():
+    return "tak nazyvat' funktsii nel'zya"
+\end{minted}\end{verbatim}
+А так --- результат:
+\begin{minted}{python}
+def funktsiya():
+    return "tak nazyvat' funktsii nel'zya"
+\end{minted}
+Вместо python можно указать другой язык, например C++ или latex.
+\end{frame}
+
+\begin{frame}[fragile]{minted --- не всё так просто}
+Если вы пользуетесь overleaf.com, то латеховский код, использующий окружение minted скомпилируется без проблем.
+Однако, чтобы всё заработало в miktex, необходимо лезть в настройки, а именно:
+\begin{enumerate}
+\item Нажать ``Правка'' --- ``Настройки''
+\item Во вкладке ``Вёрстка'' в списке ``Инструменты вёрстки'' выбрать активный профиль вёрстки (скорее всего это pdfLaTeX+MakeIndex+BibTeX --- можете посмотреть справа от зелёной стрелочки --- кнопки, которой вы запускаете компиляцию вашего латеховского проекта)
+\item Справа от списка нажать ``Правка''. В появившемся окне нажать плюсик, после чего в списке ``Параметры'' нужно вписать ``\verb|--tex-option=--shell-escape|''. Выходите из окошек кнопкой ``OK''
+\item Готово, можно пользоваться minted
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Списки}
+Кстати, на предыдущем слайде появился список --- для него тоже есть своё окружение enumerate. Очередной элемент списка начинается с команды item. \medskip
+\begin{columns}
+\column{0.45\textwidth} Код:
+\begin{minted}{latex}
+\begin{enumerate}
+\item Текст первого пункта
+\item Текст второго пункта
+\item Надоело
+\end{enumerate}
+\end{minted}
+\column{0.45\textwidth} Результат:
+\begin{enumerate}
+\item Текст первого пункта
+\item Текст второго пункта
+\item Надоело
+\end{enumerate}
+\end{columns} \medskip
+Для ненумерованного списка вместо enumerate напишите itemize.
+\end{frame}
+
+\begin{frame}[fragile]{Формулки}
+Вообще, \LaTeX придумал великий математик Дональд Кнут, чтобы писать в нём красивые формулки. Формулы делятся на внутристрочные и вынесенные. Первые выглядят так $S=\pi r^2$, а вторые --- так
+$$
+G(x-x') = \int \frac{d^4 p}{(2 \pi)^4} \frac{e^{i p_\mu (x - x')^\mu}}{p_\nu^2 - m^2 + i \epsilon}
+$$
+Внутристрочные  выделяются одиночными знаками доллара \mintinline{latex}{$S=\pi r^2$}, а вынесенные --- двойными
+\begin{minted}{latex}
+$$
+G(x-x') = \int \frac{d^4 p}{(2 \pi)^4} 
+\frac{e^{i p_\mu (x - x')^\mu}}{p_\nu^2 - m^2 + i \epsilon}
+$$
+\end{minted}
+Научиться писать красивые формулы не является целью этой презентации. Однако общий смысл и правила можно почерпнуть из примеров выше. Для большего есть прекрасные руководства, в том числе на русском языке.
+\end{frame}
+
+\begin{frame}
+\Huge \centering Спасибо за понимание:)
+\end{frame}
+
+\end{document}
